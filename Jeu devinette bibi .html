@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ALLER BIBI TROUVE LA BONNE REPONSE</title>
+  <style>
+    body {
+      background-color: pink;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      flex-direction: column;
+      position: relative;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2em;
+      color: #fff;
+      z-index: 10;
+    }
+
+    #question {
+      font-size: 1.5em;
+      color: #000; /* La question est maintenant en noir */
+    }
+
+    #input-answer {
+      margin-top: 20px;
+      padding: 10px;
+      font-size: 1.2em;
+    }
+
+    #submit-btn {
+      margin-top: 10px;
+      padding: 10px 20px;
+      font-size: 1.2em;
+      background-color: #ff69b4;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    #result {
+      display: none;
+      font-size: 2em;
+      color: #fff;
+      margin-top: 20px;
+      animation: showResult 3s ease-in-out;
+    }
+
+    @keyframes showResult {
+      0% {
+        opacity: 0;
+        transform: scale(0);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .love-text {
+      position: absolute;
+      color: white;
+      font-size: 2em;
+      opacity: 0.1;
+      animation: floatText 10s infinite;
+    }
+
+    @keyframes floatText {
+      0% {
+        transform: translateY(0);
+        opacity: 0.1;
+      }
+      50% {
+        transform: translateY(-20px);
+        opacity: 0.5;
+      }
+      100% {
+        transform: translateY(0);
+        opacity: 0.1;
+      }
+    }
+
+    /* Position des mots d'amour (pas au centre) */
+    .love-text:nth-child(1) { top: 5%; left: 5%; animation-delay: 0s; }
+    .love-text:nth-child(2) { top: 25%; left: 80%; animation-delay: 3s; }
+    .love-text:nth-child(3) { top: 5%; left: 60%; animation-delay: 1s; }
+    .love-text:nth-child(4) { top: 80%; left: 10%; animation-delay: 4s; }
+    .love-text:nth-child(5) { top: 80%; left: 80%; animation-delay: 5s; }
+    .love-text:nth-child(6) { top: 10%; left: 70%; animation-delay: 2s; }
+    .love-text:nth-child(7) { top: 70%; left: 15%; animation-delay: 6s; }
+    .love-text:nth-child(8) { top: 50%; left: 5%; animation-delay: 7s; }
+    .love-text:nth-child(9) { top: 60%; left: 65%; animation-delay: 8s; }
+
+    /* Nouveaux mots ajoutés dans le fond */
+    .extra-text:nth-child(1) { top: 10%; left: 30%; }
+    .extra-text:nth-child(2) { top: 30%; left: 40%; }
+    .extra-text:nth-child(3) { top: 70%; left: 55%; }
+  </style>
+</head>
+<body>
+
+  <h1>ALLER BIBI TROUVE LA BONNE REPONSE</h1>
+  <p id="question">Quelle est la capitale de la France ?</p>
+  <input type="text" id="input-answer" placeholder="Votre réponse">
+  <button id="submit-btn" onclick="checkAnswer()">Soumettre</button>
+  <div id="result"></div>
+
+  <!-- Mots d'amour dispersés dans le fond -->
+  <div class="love-text">Je t'aime</div>
+  <div class="love-text">Mon cœur</div>
+  <div class="love-text">Chéri(e)</div>
+  <div class="love-text">Adorable</div>
+  <div class="love-text">Toujours avec toi</div>
+  <div class="love-text">Mon amour</div>
+  <div class="love-text">Ma vie</div>
+  <div class="love-text">Pour toi</div>
+  <div class="love-text">Tendrement</div>
+
+  <!-- Nouveaux mots ajoutés -->
+  <div class="extra-text">BIBIIIII</div>
+  <div class="extra-text">CHOUCHOU</div>
+  <div class="extra-text">CEST FINI ZARA</div>
+
+  <script>
+    const questions = [
+      { question: "Quelle est la capitale de la France ?", answer: "paris" },
+      { question: "Combien de continents y a-t-il ?", answer: "7" },
+      { question: "Qui a écrit 'Les Misérables' ?", answer: "victor hugo" },
+      { question: "Quelle est la couleur du ciel par une journée ensoleillée ?", answer: "bleu" },
+      { question: "Combien de doigts avons-nous en tout ?", answer: "10" }
+    ];
+
+    let currentQuestionIndex = 0;
+
+    function showNextQuestion() {
+      const questionElement = document.getElementById('question');
+      questionElement.innerHTML = questions[currentQuestionIndex].question;
+      document.getElementById('input-answer').value = '';  // Clear the input field
+    }
+
+    function checkAnswer() {
+      const answer = document.getElementById('input-answer').value.trim().toLowerCase();
+      const resultDiv = document.getElementById('result');
+
+      if (answer === questions[currentQuestionIndex].answer) {
+        resultDiv.innerHTML = "BRAVOOOO BIBIIII D'AMOUR";
+        resultDiv.style.display = "block";
+
+        // Keep the victory message for a longer duration (3 seconds)
+        setTimeout(() => {
+          currentQuestionIndex++;
+          if (currentQuestionIndex < questions.length) {
+            showNextQuestion();
+            resultDiv.style.display = "none"; // Hide the result message for next question
+          } else {
+            resultDiv.innerHTML = "Félicitations, vous avez terminé toutes les énigmes !";
+            resultDiv.style.display = "block";
+          }
+        }, 4000); // Wait 4 seconds before showing next question
+      } else {
+        resultDiv.innerHTML = "Désolé, ce n'est pas la bonne réponse !";
+        resultDiv.style.display = "block";
+      }
+    }
+
+    // Initial question
+    showNextQuestion();
+  </script>
+
+</body>
+</html>
